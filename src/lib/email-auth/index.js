@@ -192,7 +192,7 @@ const sendVerificationMail = async ({ email, username, token }) => {
                     <table border="0" cellpadding="0" cellspacing="0">
                       <tr>
                         <td align="center" bgcolor="#1a82e2" style="border-radius: 6px;">
-                          <a href="https://sendgrid.com" target="_blank" style="display: inline-block; padding: 16px 36px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; color: #ffffff; text-decoration: none; border-radius: 6px;">Verify Account!</a>
+                          <a href="https://www.youtube.com/watch?v=euik1Zrs30w&t=15s" target="_blank" style="display: inline-block; padding: 16px 36px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; color: #ffffff; text-decoration: none; border-radius: 6px;">Verify Account!</a>
                         </td>
                       </tr>
                     </table>
