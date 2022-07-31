@@ -50,8 +50,9 @@ const loginUser = async(req, res, next) => {
         })
         } else {
             throw {
-                code: 404,
-                message: "incorrect email or password"
+                code: 405,
+                message: "incorrect email or password",
+                errorType: "Incorrect Login"
             }
         }
         
