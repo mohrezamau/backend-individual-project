@@ -45,6 +45,18 @@ const loginUser = async(req, res, next) => {
         const resFindUser = await users.findOne({
             where: {email},
         });
+        if(resFindUser){
+            res.send({status: "success", message: "login success", data: {
+                result: email
+            }
+        })
+        } else {
+            throw {
+                code: 405,
+                message: "incorrect email or password",
+                errorType: "Incorrect Login"
+            }
+        }
         console.log(`ini resfinduser ${resFindUser}`)
         const isPasswordMatch = compare(password, resFindUser.password);
         if (!isPasswordMatch) {
