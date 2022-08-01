@@ -18,7 +18,7 @@ const sendVerificationMail = async ({ email, username, token }) => {
   const mail = {
     from: "Yggdrasil verification <mreza.maulana2207@gmail.com>",
     to: email,
-    subject: "Yggdrasil email verify",
+    subject: "Yggdrasil email verification",
     html: `
 	<!DOCTYPE html>
 <html>
@@ -178,7 +178,7 @@ const sendVerificationMail = async ({ email, username, token }) => {
           <!-- start copy -->
           <tr>
             <td align="left" bgcolor="#ffffff" style="padding: 24px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px;">
-              <p style="margin: 0;">Tap the button below to confirm your email address.</p>
+              <p style="margin: 0;">Hi ${username}! Tap the button below to confirm your email address.</p>
             </td>
           </tr>
           <!-- end copy -->

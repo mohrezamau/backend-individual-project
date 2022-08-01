@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const { users } = require("../../models")
 const { Op } =require("sequelize")
+const { hash, compare } = require("../../src/lib/bcryptjs");
 
 const postUser = async(req, res, next) => {
     try {
@@ -22,8 +23,9 @@ const postUser = async(req, res, next) => {
                 }
             }
         }
+        const encryptedPassword = hash(password);
         const resCreateNewUser = await users.create({
-            username, email, password
+            username, email, password: encryptedPassword
         })
         res.send({
             status: "success",
@@ -41,8 +43,17 @@ const loginUser = async(req, res, next) => {
     try {
         const {email, password} = req.body;
         const resFindUser = await users.findOne({
-            where: {[Op.and]: {email, password}},
+            where: {email},
         });
+        console.log(`ini resfinduser ${resFindUser}`)
+        const isPasswordMatch = compare(password, resFindUser.password);
+        if (!isPasswordMatch) {
+            throw {
+              code: 401,
+              message: `Password is incorrect`,
+            };
+          }
+
         if(resFindUser){
             res.send({status: "success", message: "login success", data: {
                 result: email
@@ -55,7 +66,7 @@ const loginUser = async(req, res, next) => {
                 errorType: "Incorrect Login"
             }
         }
-        
+
     } catch (error) {
         next(error)
     }
