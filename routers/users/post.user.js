@@ -109,7 +109,19 @@ const loginUser = async(req, res, next) => {
     }
 }
 
-router.post("/", postUser);
+const resendEmail = async(req, res, next) => {
+    try {
+        // const { username, email } = req.body.users.dataValues;
+    const something = req.body;
+
+    console.log(something);
+    } catch (error) {
+        next(error)
+    }
+}
+
+router.post("/register", postUser);
 router.post("/login", loginUser);
+router.post("/resend", resendEmail)
 
 module.exports = router;
