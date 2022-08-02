@@ -13,13 +13,23 @@ const postUser = async(req, res, next) => {
         const resFindUser = await users.findOne({
             where: {[Op.or]: {username, email}},
         });
+        console.log(`ini resfinduser ${resFindUser}`)
         if (resFindUser) {
             console.log(resFindUser)
-            if(resFindUser.dataValues.username == username){
+            
+            const resUser = resFindUser.dataValues.username
+            const resEmail = resFindUser.dataValues.email
+            const resLowerUser = resUser.toLowerCase()
+            const resLowerEmail = resEmail.toLowerCase()
+            const usernameLower = username.toLowerCase()
+            const emailLower = email.toLowerCase()
+
+            if(resLowerUser == usernameLower || resLowerEmail == emailLower){
                 throw {
-                    code: 400, message: "username already exists",
+                    code: 400, message: "username or email already exists",
                     detail: {
                         databaseUsername: resFindUser,
+                        currentClientEmail: email,
                         currentClientUsername: username,
                     }, errorType: "username"
                 }
