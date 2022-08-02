@@ -20,6 +20,9 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false,
       },
+      user_token: {
+        type: Sequelize.STRING,
+      },
       isVerified: {
         type: Sequelize.BOOLEAN,
         defaultValue: false,

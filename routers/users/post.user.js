@@ -3,6 +3,8 @@ const router = express.Router();
 const { users } = require("../../models")
 const { Op } =require("sequelize")
 const { hash, compare } = require("../../src/lib/bcryptjs");
+const { sendVerificationMail } = require("../../src/lib/email-auth");
+const { createToken } = require("../../src/lib/token");
 
 const postUser = async(req, res, next) => {
     try {
@@ -23,15 +25,29 @@ const postUser = async(req, res, next) => {
                 }
             }
         }
+       
         const encryptedPassword = hash(password);
         const resCreateNewUser = await users.create({
             username, email, password: encryptedPassword
         })
+    
+        const token = createToken({
+          user_id: resCreateNewUser.dataValues.user_id,
+        });
+        
+        const patchToken = await users.findOne({where: {user_id: resCreateNewUser.dataValues.user_id}})
+        await patchToken.update({
+            user_token: token
+        })
+        const resPatchToken = await patchToken.save()
+
+        console.log(`ini token yaaa ==> ${token}`)
+        await sendVerificationMail({ email, token, username });
         res.send({
             status: "success",
             message: "sukses bikin user lanjuuut",
             data: {
-                result: resCreateNewUser,
+                result: resCreateNewUser, resPatchToken
             },
         })
     } catch (error) {
@@ -45,9 +61,18 @@ const loginUser = async(req, res, next) => {
         const resFindUser = await users.findOne({
             where: {email},
         });
+        const token = createToken({
+            user_id: users.user_id,
+            username: users.username,
+          });
         if(resFindUser){
             res.send({status: "success", message: "login success", data: {
-                result: email
+                result: {
+                    user_id: users.user_id,
+                    email: users.email,
+                    username: users.username,
+                    accesstoken: token,
+                },
             }
         })
         } else {
