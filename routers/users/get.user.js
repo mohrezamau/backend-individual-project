@@ -21,6 +21,38 @@ const getUser = async (req, res, next) => {
     }
   };
 
+
+  const getUserProfileController = async (req, res, next) => {
+    try {
+      const {user_id} = req.params
+      console.log(req.params)
+      const resGetUser = await users.findAll({
+        attributes: [
+          "user_id",
+          "username",
+          "isVerified",
+          "fullname",
+          "bio",
+          "email",
+          "avatar",
+        ],
+        where: {user_id},
+      });
+  
+      if (!resGetUser.length) throw {message: "User not found"};
+      console.log(resGetUser)
+      res.send({
+        status: "Success",
+        message: "User Profile",
+        data: {
+          result: resGetUser[0],
+        },
+      });
+    } catch (error) {
+      next(error);
+    }
+  };
+
   const verifyUserController = async (req, res, next) => {
     try {
       const { token } = req.params;
@@ -407,5 +439,6 @@ const getUser = async (req, res, next) => {
 
 router.get("/", getUser);
 router.get("/verification/:token", verifyUserController);
+router.get("/profile/:user_id", getUserProfileController )
 
 module.exports = router;

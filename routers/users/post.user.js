@@ -50,12 +50,12 @@ const postUser = async(req, res, next) => {
             user_token: token
         })
         const resPatchToken = await patchToken.save()
-
+       
         console.log(`ini token yaaa ==> ${token}`)
         await sendVerificationMail({ email, token, username });
         res.send({
             status: "success",
-            message: "sukses bikin user lanjuuut",
+            message: "sukses bikin user dan kirim email",
             data: {
                 result: resCreateNewUser, resPatchToken
             },
@@ -71,16 +71,29 @@ const loginUser = async(req, res, next) => {
         const resFindUser = await users.findOne({
             where: {email},
         });
-        const token = createToken({
-            user_id: users.user_id,
-            username: users.username,
-          });
+
+        
         if(resFindUser){
+            const user = resFindUser.dataValues
+
+            const isPasswordMatch = compare(password, user.password);
+            if (!isPasswordMatch) {
+                throw {
+                code: 401,
+                message: `Password is incorrect`,
+                };
+            }
+
+            const token = createToken({
+                user_id: user.user_id,
+                username: user.username,
+            });
+
             res.send({status: "success", message: "login success", data: {
                 result: {
-                    user_id: users.user_id,
-                    email: users.email,
-                    username: users.username,
+                    user_id: user.user_id,
+                    email: user.email,
+                    username: user.username,
                     accesstoken: token,
                 },
             }
@@ -92,28 +105,6 @@ const loginUser = async(req, res, next) => {
                 errorType: "Incorrect Login"
             }
         }
-        console.log(`ini resfinduser ${resFindUser}`)
-        const isPasswordMatch = compare(password, resFindUser.password);
-        if (!isPasswordMatch) {
-            throw {
-              code: 401,
-              message: `Password is incorrect`,
-            };
-          }
-
-        if(resFindUser){
-            res.send({status: "success", message: "login success", data: {
-                result: email
-            }
-        })
-        } else {
-            throw {
-                code: 405,
-                message: "incorrect email or password",
-                errorType: "Incorrect Login"
-            }
-        }
-
     } catch (error) {
         next(error)
     }
@@ -122,9 +113,37 @@ const loginUser = async(req, res, next) => {
 const resendEmail = async(req, res, next) => {
     try {
         // const { username, email } = req.body.users.dataValues;
-    const something = req.body;
+    const {email, username} = req.body;
+        console.log(email, username)
+    const resFindUser = await users.findOne({
+            where: {[Op.or]: {username, email}},
+        });
+    console.log(`ini resfinduser ${resFindUser.dataValues.user_id}`)
+    const token = createToken({
+        user_id: resFindUser.dataValues.user_id,
+      });
+      const patchToken = await users.findOne({where: {user_id: resFindUser.dataValues.user_id}})
+      await patchToken.update({
+          user_token: token
+      })
+      const resPatchToken = await patchToken.save()
 
-    console.log(something);
+      console.log(`ini token yaaa ==> ${token}`)
+      await sendVerificationMail({ email, token, username });
+      const patchVerify = await users.findOne({where: {user_id: resFindUser.dataValues.user_id}})
+     
+      await patchVerify.update({
+        isVerified: false
+      })
+
+      const resVerify = await patchVerify.save()
+      res.send({
+        status: "success",
+        message: "sukses kirim ulang email",
+        data: {
+            result: resPatchToken, resVerify
+        },
+    })
     } catch (error) {
         next(error)
     }
