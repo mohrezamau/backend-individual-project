@@ -34,9 +34,8 @@ const updateUserController = async (req, res, next) => {
         {
           username,
           bio,
-          first_name: firstName,
-          last_name: lastName,
-          gender,
+          fullname,
+          
         },
         {
           where: {user_id},

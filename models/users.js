@@ -26,11 +26,11 @@ module.exports = (sequelize, DataTypes) => {
     },
     fullname: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
     },
     bio: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
     },
     email: {
       type: DataTypes.STRING,
@@ -42,7 +42,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     avatar: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
     },
     user_token: {
       type: DataTypes.STRING,

@@ -14,11 +14,11 @@ module.exports = {
       },
       fullname: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
       },
       bio: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
       },
       email: {
         type: Sequelize.STRING,
@@ -30,7 +30,7 @@ module.exports = {
       },
       avatar: {
         type: Sequelize.STRING,
-        allowNull: false,
+        allowNull: true,
       },
       user_token: {
         type: Sequelize.STRING,
