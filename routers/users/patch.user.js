@@ -8,7 +8,7 @@ const {users} = require("../../models");
 const updateUserController = async (req, res, next) => {
     try {
       const {user_id} = req.user;
-      const {username, bio, firstName, lastName, gender} = req.body;
+      const {username, bio, fullname} = req.body;
   
       const emptyFields = isFieldEmpties({
         username,
