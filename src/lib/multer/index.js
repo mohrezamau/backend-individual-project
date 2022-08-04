@@ -10,7 +10,8 @@ const avatarStorage = multer.diskStorage({
     cb(null, avatarPath);
   },
   filename: function (req, file, cb) {
-    const { username } = req.users.dataValues;
+    console.log(req.user)
+    const { username } = req.user;
     cb(null, `${username}-avatar.png`);
   },
 });

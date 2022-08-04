@@ -3,6 +3,7 @@ const cors = require("cors");
 const app = express();
 require("dotenv").config();
 const port = process.env.PORT;
+const bearerToken = require("express-bearer-token")
 
 // routers
 const usersRouter = require("./routers/users");
@@ -10,8 +11,9 @@ const usersRouter = require("./routers/users");
 
 // app.use
 app.use(cors());
+app.use(bearerToken())
 app.use(express.json());
-app.use(express.static("public"));
+app.use("/public",express.static("public"));
 
 app.get("/", (req, res) =>{
     res.send("access is secured!");

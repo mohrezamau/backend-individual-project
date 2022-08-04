@@ -1,40 +1,40 @@
 const express = require("express");
 const router = express.Router();
-const {isFieldEmpties} = require("../../helpers");
-const {auth} = require("../../helpers/auth");
-const {uploadAvatar} = require("../../src/lib/email-auth");
+const {isFieldEmpties} = require("../../src/helpers");
+const {auth} = require("../../src/helpers/auth");
+const {uploadAvatar} = require("../../src/lib/multer");
 const {users} = require("../../models");
 
 const updateUserController = async (req, res, next) => {
     try {
       const {user_id} = req.user;
-      const {username, bio, fullname} = req.body;
+      const {bio, fullname} = req.body;
+      console.log({user_id})
+      console.log(req.body)
+      // const emptyFields = isFieldEmpties({
+      //   username,
+      // });
   
-      const emptyFields = isFieldEmpties({
-        username,
-      });
+      // if (emptyFields.length) {
+      //   throw {
+      //     code: 400,
+      //     message: "Username cannot be empty",
+      //     data: {result: emptyFields},
+      //   };
+      // }
   
-      if (emptyFields.length) {
-        throw {
-          code: 400,
-          message: "Username cannot be empty",
-          data: {result: emptyFields},
-        };
-      }
+      // const resGetUsername = await users.findAll({
+      //   attributes: ["username"],
+      //   where: {username},
+      // });
   
-      const resGetUsername = await users.findAll({
-        attributes: ["username"],
-        where: {username},
-      });
-  
-      if (resGetUsername.length)
-        throw {code: 401, message: "Username is already used"};
+      // if (resGetUsername.length)
+      //   throw {code: 401, message: "Username is already used"};
   
       const resUpdateUser = await users.update(
         {
-          username,
-          bio,
-          fullname,
+         bio: bio,
+         fullname: fullname,
           
         },
         {
@@ -55,13 +55,14 @@ const updateUserController = async (req, res, next) => {
 
 const updateUserAvatarController = async (req, res, next) => {
     try {
+  
       const {user_id} = req.user;
       const {filename} = req.file;
-      const finalFileName = `/public/avatar/${filename}`;
-  
+      const finalFileName = `/public/userAvatar/${filename}`;
+      console.log({finalFileName})
       const resUpdateAvatar = await users.update(
         {
-          image: finalFileName,
+          avatar: finalFileName,
         },
         {
           where: {
