@@ -42,9 +42,11 @@ const postStorage = multer.diskStorage({
     cb(null, postsPath);
   },
   filename: function (req, file, cb) {
-    const { username } = req.users.dataValues;
-    const postCount = req.posts.length;
-    cb(null, `${username}-post-${req.custom_id}.png`);
+    const { username } = req.user;
+    const d = new Date();
+    let time = d.getTime();
+    // const postCount = req.posts.length;
+    cb(null, `${username}-post-${time}.png`);
   },
 });
 

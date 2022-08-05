@@ -18,7 +18,7 @@ const updateUserController = async (req, res, next) => {
       // if (emptyFields.length) {
       //   throw {
       //     code: 400,
-      //     message: "Username cannot be empty",
+      //     message: "fullname cannot be empty",
       //     data: {result: emptyFields},
       //   };
       // }
@@ -31,16 +31,39 @@ const updateUserController = async (req, res, next) => {
       // if (resGetUsername.length)
       //   throw {code: 401, message: "Username is already used"};
   
-      const resUpdateUser = await users.update(
-        {
-         bio: bio,
-         fullname: fullname,
-          
-        },
-        {
-          where: {user_id},
-        }
-      );
+
+      if(bio && fullname){
+        const resUpdateBioFullname = await users.update(
+          {
+           bio: bio,
+           fullname: fullname,
+            
+          },
+          {
+            where: {user_id},
+          }
+        );
+      } else if (bio) {
+        const resUpdateBio = await users.update(
+          {
+           bio: bio
+          },
+          {
+            where: {user_id},
+          }
+        );
+      } else if (fullname) {
+        const resUpdateFullname = await users.update(
+          {
+           fullname: fullname,
+            
+          },
+          {
+            where: {user_id},
+          }
+        );
+      }
+      
   
       // if (!resUpdateUser.affectedRows) throw {message: "Failed to update user"};
   
