@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const { posts } = require("../../models")
+const { users } = require("../../models")
 
 const getPosts = async (req, res, next) => {
     try {
@@ -9,8 +10,12 @@ const getPosts = async (req, res, next) => {
       const resGetPosts = await posts.findAll({
         raw: true, 
         order: [["createdAt", "DESC"]],
+        subQuery: false,
+        include: {
+          model: users
+        }
       });
-  
+
       res.send({
         status: "Success",
         message: "Success get all post",
