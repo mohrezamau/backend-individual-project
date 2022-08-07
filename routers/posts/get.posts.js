@@ -28,7 +28,6 @@ const getPosts = async (req, res, next) => {
         return post
       })
 
-
       res.send({
         status: "Success",
         message: "Success get all post",
@@ -39,8 +38,35 @@ const getPosts = async (req, res, next) => {
       res.send(error);
     }
   };
+  
+
+  const getPost = async (req, res, next) => {
+    try {
+        const { post_id } = req.params;
+
+      const resGetPost = await posts.findOne({
+        where:{post_id}
+      })
+      console.log(resGetPost.dataValues.user_id);
+      const {user_id} = resGetPost.dataValues
+      const resGetPoster = await users.findOne({
+        where: {user_id}
+      })
+
+      res.send({
+        status: "Success",
+        message: "Success get user and post",
+        data: resGetPost,
+         resGetPoster
+      })
+    } catch (error) {
+      console.log(error);
+      res.send(error);
+    }
+  }
 
   router.get("/", getPosts)
+  router.get("/getPost/:post_id", getPost )
 
 
 module.exports = router;
