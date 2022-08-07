@@ -10,16 +10,29 @@ const getPosts = async (req, res, next) => {
       const resGetPosts = await posts.findAll({
         raw: true, 
         order: [["createdAt", "DESC"]],
-        subQuery: false,
-        include: {
-          model: users
-        }
       });
+
+      const mappedUser = resGetPosts.map((post)=>{
+        return post.user_id
+      })
+
+      const userFound = []
+
+      for (const user_id of mappedUser){
+        const getPostUser = await users.findOne({where:{user_id}})
+        userFound.push(getPostUser.username)
+      }
+
+      const resPostUser = resGetPosts.map((post,index)=>{
+        post.username=userFound[index]
+        return post
+      })
+
 
       res.send({
         status: "Success",
         message: "Success get all post",
-        data: resGetPosts,
+        data: resGetPosts
       })
     } catch (error) {
       console.log(error);
