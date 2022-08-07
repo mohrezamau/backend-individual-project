@@ -3,10 +3,12 @@ const router = express.Router();
 const { posts } = require("../../models")
 const { users } = require("../../models")
 
+
 const deletePost = async (req, res, next) => {
     try {
         const { post_id } = req.params;
         
+
         const resDeletePost = await posts.destroy(
         {
             where: {post_id}
@@ -14,7 +16,9 @@ const deletePost = async (req, res, next) => {
     );
 
 
+
     //test commit 
+
     res.send({
         status: "success",
         message: "success delete post"
@@ -22,6 +26,7 @@ const deletePost = async (req, res, next) => {
 
     } catch (error) {
         console.log(error);
+
         next(error);
     }
 }
@@ -29,3 +34,4 @@ const deletePost = async (req, res, next) => {
 router.delete("/:post_id", deletePost)
 
 module.exports = router
+

@@ -2,6 +2,7 @@
 const {
   Model
 } = require('sequelize');
+const { post } = require('../routers/posts');
 module.exports = (sequelize, DataTypes) => {
   class posts extends Model {
     
@@ -11,7 +12,9 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      posts.belongsTo(models.users, { foreignKey: "user_id"});    
+      posts.hasMany(models.comments,{foreignKey:"post_id", as:"postComment"})
+      posts.hasMany(models.likes,{foreignKey:"post_id",as:"postLike"})
+      posts.belongsTo(models.users, { foreignKey: "user_id",as:"userPost"});    
     }
   }
   posts.init({
