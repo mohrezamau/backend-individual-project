@@ -35,7 +35,7 @@ const getPosts = async (req, res, next) => {
       })
     } catch (error) {
       console.log(error);
-      res.send(error);
+      next(error);
     }
   };
   
@@ -61,7 +61,7 @@ const getPosts = async (req, res, next) => {
       })
     } catch (error) {
       console.log(error);
-      res.send(error);
+      next(error);
     }
   }
 

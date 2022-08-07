@@ -11,26 +11,6 @@ const updateUserController = async (req, res, next) => {
       const {bio, fullname} = req.body;
       console.log({user_id})
       console.log(req.body)
-      // const emptyFields = isFieldEmpties({
-      //   username,
-      // });
-  
-      // if (emptyFields.length) {
-      //   throw {
-      //     code: 400,
-      //     message: "fullname cannot be empty",
-      //     data: {result: emptyFields},
-      //   };
-      // }
-  
-      // const resGetUsername = await users.findAll({
-      //   attributes: ["username"],
-      //   where: {username},
-      // });
-  
-      // if (resGetUsername.length)
-      //   throw {code: 401, message: "Username is already used"};
-  
 
       if(bio && fullname){
         const resUpdateBioFullname = await users.update(
