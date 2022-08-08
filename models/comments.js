@@ -3,33 +3,32 @@ const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class posts extends Model {
-    
+  class comments extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      posts.belongsTo(models.users, { foreignKey: "user_id"});
-      posts.hasMany(models.comments, {foreignKey: "post_id"})    
+      comments.belongsTo(models.posts, {foreignKey: "post_id"});
+      comments.belongsTo(models.users, {foreignKey: "user_id"});
     }
   }
-  posts.init({
-    post_id: {
+  comments.init({
+    comment_id: {
       allowNull: false,
       autoIncrement: true,
       primaryKey: true,
       type: DataTypes.INTEGER
     },
-    caption: {
-      type: DataTypes.STRING,
-      allowNull: false
+    post_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: "posts",
+        key: "post_id",
     },
-    image: {
-      type: DataTypes.STRING,
-      allowNull: false
-    },
+  },
     user_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
@@ -38,6 +37,9 @@ module.exports = (sequelize, DataTypes) => {
         key: "user_id",
     },
   },
+    phrase: {
+      type: DataTypes.STRING
+    },
     createdAt: {
       allowNull: false,
       type: DataTypes.DATE
@@ -46,10 +48,9 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       type: DataTypes.DATE
     }
-  },{
+  }, {
     sequelize,
-    modelName: 'posts',
-  }
-  );
-  return posts;
+    modelName: 'comments',
+  });
+  return comments;
 };
