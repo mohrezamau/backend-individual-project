@@ -8,7 +8,8 @@ const bearerToken = require("express-bearer-token")
 // routers
 const usersRouter = require("./routers/users");
 const postsRouter = require("./routers/posts");
-const commentsRouter = require("./routers/comments")
+const commentsRouter = require("./routers/comments");
+const likesRouter = require("./routers/likes")
 
 // app.use
 app.use(cors());
@@ -23,6 +24,7 @@ app.get("/", (req, res) =>{
 app.use("/users", usersRouter)
 app.use("/posts", postsRouter)
 app.use("/comments", commentsRouter)
+app.use("/likes", likesRouter)
 
 app.use((error, req, res, next)=> {
     console.log({error});
