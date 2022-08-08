@@ -112,7 +112,6 @@ const loginUser = async(req, res, next) => {
 
 const resendEmail = async(req, res, next) => {
     try {
-        // const { username, email } = req.body.users.dataValues;
     const {email, username} = req.body;
         console.log(email, username)
     const resFindUser = await users.findOne({

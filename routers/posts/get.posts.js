@@ -5,8 +5,7 @@ const { users } = require("../../models")
 
 const getPosts = async (req, res, next) => {
     try {
-    //   const { post_id } = req.params;
-  
+    
       const resGetPosts = await posts.findAll({
         raw: true, 
         order: [["createdAt", "DESC"]],
