@@ -80,7 +80,7 @@ const loginUser = async(req, res, next) => {
             if (!isPasswordMatch) {
                 throw {
                 code: 401,
-                message: `Password is incorrect`,
+                message: `Password or email is incorrect`,
                 };
             }
 
